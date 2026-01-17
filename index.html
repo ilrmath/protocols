@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>ネットワークプロトコル図鑑 (コンパクト版)</title>
+  <title>ネットワークプロトコル図鑑 (完全版)</title>
   <style>
     :root {
       --bg: #1a202c;
@@ -24,13 +24,13 @@
       margin: 0 0 10px 0; padding-bottom: 5px; 
     }
     
-    /* 凡例の余白を削減 */
+    /* 凡例のスタイル */
     .port-legend {
       background: rgba(99, 179, 237, 0.1);
       border: 1px solid var(--accent);
       border-radius: 8px;
-      padding: 6px 10px; /* パディング縮小 */
-      margin-bottom: 10px; /* マージン縮小 */
+      padding: 6px 10px;
+      margin-bottom: 10px;
       font-size: 14px;
       line-height: 1.4;
     }
@@ -40,12 +40,12 @@
     
     .tabs { display: flex; gap: 10px; margin-bottom: 5px; }
     .tab-btn {
-      flex: 1; padding: 12px; border: none; border-radius: 8px; /* パディング少し縮小 */
+      flex: 1; padding: 12px; border: none; border-radius: 8px;
       background: #4a5568; color: #a0aec0; font-weight: bold; cursor: pointer; transition: 0.3s;
     }
     .tab-btn.active { background: var(--accent); color: #1a202c; box-shadow: 0 0 15px rgba(99, 179, 237, 0.4); }
 
-    /* ステージの高さを大幅にカット (420px -> 280px) */
+    /* ステージパネル */
     .stage-panel {
       background: var(--panel); border-radius: 12px; padding: 20px;
       position: relative; height: 280px; overflow: hidden;
@@ -85,16 +85,21 @@
     
     .p-data { color: var(--server); font-size: 50px; text-shadow: 0 0 10px rgba(79, 209, 197, 0.6); }
     .p-mail { color: var(--mail); font-size: 50px; }
+    
+    /* TCPの会話テキストが入るように調整 */
     .p-flag { 
       background: #fbd38d; color: #1a202c; font-size: 16px; font-weight:bold;
-      border-radius: 8px; padding: 6px; border: 2px solid #fff; width: 95px; text-align:center;
+      border-radius: 8px; padding: 4px; border: 2px solid #fff; 
+      width: 140px; /* 幅を拡張 */
+      text-align:center;
+      line-height: 1.2; /* 行間調整 */
     }
     
     .controls { display: grid; grid-template-columns: 1fr 2fr; gap: 15px; }
     .btn-group { display: flex; flex-direction: column; gap: 8px; }
     
     button.action-btn {
-      padding: 10px 12px; /* ボタンの高さを少し詰める */
+      padding: 10px 12px;
       border: none; border-radius: 6px; cursor: pointer;
       font-weight: bold; color: #1a202c; text-align: left;
       display: flex; justify-content: space-between; align-items: center; transition: 0.2s;
@@ -103,18 +108,15 @@
     
     .info-box {
       background: rgba(0,0,0,0.3); padding: 12px; border-radius: 8px;
-      font-size: 14px; line-height: 1.5; min-height: 100px; /* 高さ縮小 */
+      font-size: 14px; line-height: 1.5; min-height: 100px;
     }
     .info-title { font-weight: bold; color: var(--accent); margin-bottom: 5px; font-size: 18px; border-bottom: 1px dashed rgba(255,255,255,0.2); }
 
-    /* --- 配置調整 (高さを詰めたので top を上にずらす) --- */
-    
-    /* Webモード: top 180px -> 110px */
+    /* --- 配置調整 --- */
     .mode-web .d-client { top: 110px; left: 80px; }
     .mode-web .d-server { top: 110px; right: 80px; }
     .mode-web .d-mail-srv-a, .mode-web .d-mail-srv-b, .mode-web .d-client-b { display: none; }
     
-    /* Mailモード: top 100px -> 80px (少し上に) */
     .mode-mail .d-client { top: 80px; left: 20px; }
     .mode-mail .d-mail-srv-a { top: 80px; left: 260px; }
     .mode-mail .d-mail-srv-b { top: 80px; right: 260px; }
@@ -128,8 +130,8 @@
   <h1>ネットワークプロトコル図鑑 (完全版)</h1>
   
   <div class="port-legend">
-    <span class="legend-item">主要なウェルノウンポート：</span>
-    Port 80:HTTP / Port 25:SMTP / Port 110:POP / Port 143:IMAP / Port 53:DNS(UDP)
+    <span class="legend-item">主要なプロトコル：</span>
+    Port 80: HTTP (Web) / UDP: 動画配信など / Port 25: SMTP (メール)
   </div>
 
   <div class="tabs">
@@ -147,9 +149,9 @@
 
   <div class="controls">
     <div class="btn-group" id="ctrl-web">
-      <button class="action-btn" style="background:#90cdf4" onclick="animHTTP()"><span>HTTP (Port 80)</span><span>🌏🖼️</span></button>
-      <button class="action-btn" style="background:#fbd38d" onclick="animTCP()"><span>TCP (接続＋荷物転送)</span><span>🤝📦</span></button>
-      <button class="action-btn" style="background:#f687b3" onclick="animUDP()"><span>UDP (Port 53: DNS)</span><span>🚀</span></button>
+      <button class="action-btn" style="background:#90cdf4" onclick="animHTTP()"><span>HTTP (Webサイト)</span><span>🌏🖼️</span></button>
+      <button class="action-btn" style="background:#fbd38d" onclick="animTCP()"><span>TCP (確実な通信)</span><span>🤝📦</span></button>
+      <button class="action-btn" style="background:#f687b3" onclick="animUDP()"><span>UDP (動画・通話)</span><span>🎥🚀</span></button>
     </div>
     <div class="btn-group" id="ctrl-mail" style="display:none;">
       <button class="action-btn" style="background:#fbd38d" onclick="animSMTP()"><span>1. SMTP送信 (P:25)</span><span>📧</span></button>
@@ -237,18 +239,28 @@
     });
   }
 
+  // === TCPのアニメーション (会話形式) ===
   function animTCP() {
     const cPort = getEphemeralPort();
     const sPort = 80;
-    infoTitle.innerText = "TCP 3-way ハンドシェイク ＋ 荷物転送";
-    infoText.innerHTML = "① SYN: 接続をお願いします。";
-    const p1 = createPacket("SYN", "p-flag", cPort, sPort);
+    infoTitle.innerText = "TCP 3-way ハンドシェイク";
+    
+    // Step 1: SYN
+    infoText.innerHTML = "① <b>SYN</b> (Synchronize: 同期)<br>「接続させてください！」";
+    const p1 = createPacket("SYN<br><small style='font-size:11px;font-weight:normal'>(接続していい？)</small>", "p-flag", cPort, sPort);
+    
     movePacket(p1, 'webClient', 'webServer', SPEED_SLOW, 0, () => {
-      const p2 = createPacket("SYN/ACK", "p-flag", sPort, cPort);
-      infoText.innerHTML += "<br>② SYN/ACK: 了解しました。準備OKです。";
+      
+      // Step 2: SYN/ACK
+      const p2 = createPacket("SYN/ACK<br><small style='font-size:11px;font-weight:normal'>(いいよ送って！)</small>", "p-flag", sPort, cPort);
+      infoText.innerHTML += "<br>② <b>SYN/ACK</b> (Syn + Acknowledge: 確認)<br>「いいよ(確認)！こっちも準備OK(同期)」";
+      
       movePacket(p2, 'webServer', 'webClient', SPEED_SLOW, INTERVAL, () => {
-        const p3 = createPacket("ACK", "p-flag", cPort, sPort);
-        infoText.innerHTML += "<br>③ ACK: 通信を開始します！";
+        
+        // Step 3: ACK
+        const p3 = createPacket("ACK<br><small style='font-size:11px;font-weight:normal'>(了解！送るね)</small>", "p-flag", cPort, sPort);
+        infoText.innerHTML += "<br>③ <b>ACK</b> (Acknowledge: 確認)<br>「ありがとう！じゃあ通信開始するね」";
+        
         movePacket(p3, 'webClient', 'webServer', SPEED_SLOW, INTERVAL, () => {
           infoText.innerHTML += "<br><b>④ 荷物転送:</b> 接続確立後、実際のデータ(📦)を連続で送ります。";
           let count = 0;
@@ -265,15 +277,34 @@
     });
   }
 
+  // === UDPのアニメーション (動画ストリーミング / 一方的送信) ===
   function animUDP() {
     const cPort = getEphemeralPort();
-    const sPort = 53;
-    infoTitle.innerText = "UDP (Port 53: DNS住所問い合わせ)";
-    infoText.innerHTML = "挨拶なしで「yahoo.co.jpの場所教えて！」といきなり53番ポートへ送ります。";
-    for(let i=0; i<3; i++) {
-      const p = createPacket("🚀", "p-data", cPort, sPort);
-      movePacket(p, 'webClient', 'webServer', 1500, i*800);
-    }
+    // ストリーミングは特定のポートというより「UDP」という仕組みが重要なので
+    // ポート番号の代わりに役割を表示して分かりやすくします
+    const sPort = "Stream"; 
+    
+    infoTitle.innerText = "UDP (動画ストリーミング)";
+    infoText.innerHTML = "<b>一方的なデータ送信:</b><br>「届いた？」の確認(ACK)をせず、映像データ(🎥)を連続で送り続けます。";
+    
+    // サーバー(動画配信元)からクライアント(視聴者)へ、パケットを連射
+    let count = 0;
+    const sendStream = () => {
+      if(count >= 5) { // 5回連続で送る
+         infoText.innerHTML += "<br>✅ 多少パケットが欠けても、映像が止まらないことを優先します(速度重視)。";
+         return;
+      }
+      
+      // サーバー -> クライアント の向きに変更
+      const p = createPacket("🎥", "p-data", sPort, cPort);
+      // ACKなしで一方的に送るため、movePacketのcallback(完了通知)は使わず、次のパケットをすぐ発射
+      movePacket(p, 'webServer', 'webClient', 1500, 0); 
+      
+      count++;
+      setTimeout(sendStream, 600); // 0.6秒ごとに次々発射
+    };
+    
+    sendStream();
   }
 
   function animSMTP() {
